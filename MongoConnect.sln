@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MongoConnect.Model", "MongoConnect.Model\MongoConnect.Model.csproj", "{06E41535-B9C7-4931-97B0-8F540042EFF8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MongoConnect.Repository", "MongoConnect.Repository\MongoConnect.Repository.csproj", "{B5F198CF-510D-43CC-A385-4BC98FAE9821}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MongoConnect.Workspace", "MongoConnect.Workspace\MongoConnect.Workspace.csproj", "{9392EC14-77F6-4133-98AF-355D5ABC278B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{06E41535-B9C7-4931-97B0-8F540042EFF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06E41535-B9C7-4931-97B0-8F540042EFF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06E41535-B9C7-4931-97B0-8F540042EFF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06E41535-B9C7-4931-97B0-8F540042EFF8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5F198CF-510D-43CC-A385-4BC98FAE9821}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5F198CF-510D-43CC-A385-4BC98FAE9821}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5F198CF-510D-43CC-A385-4BC98FAE9821}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5F198CF-510D-43CC-A385-4BC98FAE9821}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9392EC14-77F6-4133-98AF-355D5ABC278B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9392EC14-77F6-4133-98AF-355D5ABC278B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9392EC14-77F6-4133-98AF-355D5ABC278B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9392EC14-77F6-4133-98AF-355D5ABC278B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
