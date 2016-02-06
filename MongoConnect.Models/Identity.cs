@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MongoConnect.Repository
+namespace MongoConnect.Models
 {
-    public class MongoQuery
+    public interface Identity
     {
+        string Value { get; }
+        bool IsNull { get; }
     }
 }

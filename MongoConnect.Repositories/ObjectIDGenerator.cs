@@ -1,13 +1,13 @@
-﻿using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MongoConnect.Repository
+namespace MongoConnect.Repositories
 {
-    public class ObjectIDGenerator : IIdGenerator
+    internal class ObjectIDGenerator : IIdGenerator
     {
         public object GenerateId(object container, object document)
         {

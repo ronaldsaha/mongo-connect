@@ -4,16 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MongoConnect.Model
+namespace MongoConnect.Models
 {
     public abstract class Entity
     {
         protected Entity() { }
-        protected Entity(Identity id)
-        {
-            Id = id;
-        }
-
+        protected Entity(Identity id) { Id = id; }
         public Identity Id { get; private set; }
     }
 }

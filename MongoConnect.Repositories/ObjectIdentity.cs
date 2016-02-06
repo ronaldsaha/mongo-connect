@@ -1,4 +1,4 @@
-﻿using MongoConnect.Model;
+using MongoConnect.Models;
 using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MongoConnect.Repository
+namespace MongoConnect.Repositories
 {
-    public class ObjectIdentity : Identity
+    internal class ObjectIdentity : Identity
     {
         public ObjectIdentity()
         {

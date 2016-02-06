@@ -55,12 +55,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Person.cs" />
+    <Compile Include="PersonRepository.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RepositorySession.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MongoConnect.Models\MongoConnect.Models.csproj">
+      <Project>{9d26c914-c3cf-42e1-bea7-5117366d87e9}</Project>
+      <Name>MongoConnect.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MongoConnect.Repositories\MongoConnect.Repositories.csproj">
+      <Project>{b588717d-3b23-40b4-9ff2-271ba2259356}</Project>
+      <Name>MongoConnect.Repositories</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
