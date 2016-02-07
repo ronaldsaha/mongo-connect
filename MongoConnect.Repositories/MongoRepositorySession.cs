@@ -11,6 +11,7 @@ namespace MongoConnect.Repositories
 {
     public abstract class MongoDBSession
     {
+        private MongoDBSession() { }
         protected MongoDBSession(string connectionUrl)
         {
             MongoUrl mongoUrl = MongoUrl.Create(connectionUrl);
@@ -29,8 +30,6 @@ namespace MongoConnect.Repositories
             ObjectIDSerializer IDSerializer = new ObjectIDSerializer();
             BsonSerializer.RegisterSerializer(typeof(Identity), IDSerializer);
             BsonSerializer.RegisterSerializer(typeof(ObjectIdentity), IDSerializer);
-
-            //initialization codes.
         }
 
         public Context GetContext()

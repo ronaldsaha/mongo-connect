@@ -44,6 +44,7 @@
     <Compile Include="Context.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="Identity.cs" />
+    <Compile Include="NullIdentity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

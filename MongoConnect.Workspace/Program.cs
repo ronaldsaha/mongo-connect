@@ -12,14 +12,29 @@ namespace MongoConnect.Workspace
     {
         static void Main(string[] args)
         {
-            string connectionUrl = "mongodb://localhost/MongoConnectTest";
-            RepositorySession session = new RepositorySession(connectionUrl);
+            try
+            {
+                RepositorySession.Initialize();
+                string connectionUrl = "mongodb://localhost/MongoConnectTest";
+                RepositorySession session = new RepositorySession(connectionUrl);
+
+                CreateReadUpdateDelete(session);
+            }
+            catch (Exception e) { }
+        }
+
+        public static void CreateReadUpdateDelete(RepositorySession session)
+        {
             Context context = session.GetContext();
-
-            Person person = new Person(session.GetContext().GetNewID());
-
             PersonRepository personRepo = session.GetPersonRepository();
+
+            Person person = new Person(context, "This is test");
+
             personRepo.Create(person);
+            Person personFromDB = personRepo.Read(person.Id);
+            personFromDB.FullName = "Name Changed";
+            personRepo.Update(personFromDB);
+            personRepo.Delete(person.Id);
         }
     }
 }
