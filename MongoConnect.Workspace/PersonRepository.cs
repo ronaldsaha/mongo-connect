@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MongoConnect.Workspace
 {
-    public class PersonRepository : EntityRepository<Person>
+    public class PersonRepository : BaseRepository<Person>
     {
         public PersonRepository(IMongoDatabase database, string collectionName) : base(database, collectionName) { }
     }

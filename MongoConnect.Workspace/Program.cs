@@ -30,7 +30,7 @@ namespace MongoConnect.Workspace
 
             Person person = new Person(context, "This is test");
 
-            personRepo.Create(person);
+            personRepo.Insert(person);
             Person personFromDB = personRepo.Read(person.Id);
             personFromDB.FullName = "Name Changed";
             personRepo.Update(personFromDB);
