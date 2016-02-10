@@ -31,9 +31,9 @@ namespace MongoConnect.Workspace
             Person person = new Person(context, "This is test");
 
             personRepo.Insert(person);
-            Person personFromDB = personRepo.Read(person.Id);
+            Person personFromDB = personRepo.Find(person.Id);
             personFromDB.FullName = "Name Changed";
-            personRepo.Update(personFromDB);
+            personRepo.Replace(personFromDB);
             personRepo.Delete(person.Id);
         }
     }
