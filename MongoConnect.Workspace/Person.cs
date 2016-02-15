@@ -9,7 +9,7 @@ namespace MongoConnect.Workspace
 {
     public class Person : Entity
     {
-        public Person(Context context, string fullName) : base(context) { FullName = fullName; }
+        public Person(string fullName) { FullName = fullName; }
         public string FullName { get; set; }
     }
 }

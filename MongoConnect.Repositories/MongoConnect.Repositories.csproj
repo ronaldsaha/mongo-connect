@@ -52,11 +52,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Database.cs" />
     <Compile Include="BaseRepository.cs" />
     <Compile Include="Repository.cs" />
     <Compile Include="MongoDBContext.cs" />
-    <Compile Include="MongoRepositorySession.cs" />
+    <Compile Include="MongoDBSession.cs" />
     <Compile Include="ObjectIdentity.cs" />
     <Compile Include="ObjectIDGenerator.cs" />
     <Compile Include="ObjectIDSerializer.cs" />

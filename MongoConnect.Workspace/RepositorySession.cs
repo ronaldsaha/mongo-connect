@@ -13,7 +13,7 @@ namespace MongoConnect.Workspace
 
         public PersonRepository GetPersonRepository()
         {
-            return new PersonRepository(this._Database, "Person");
+            return new PersonRepository(this.Context, "Person");
         }
     }
 }

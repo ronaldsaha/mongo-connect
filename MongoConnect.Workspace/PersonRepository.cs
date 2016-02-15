@@ -1,4 +1,5 @@
-﻿using MongoConnect.Repositories;
+﻿using MongoConnect.Models;
+using MongoConnect.Repositories;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,6 @@ namespace MongoConnect.Workspace
 {
     public class PersonRepository : BaseRepository<Person>
     {
-        public PersonRepository(IMongoDatabase database, string collectionName) : base(database, collectionName) { }
+        public PersonRepository(Context context, string collectionName) : base(context, collectionName) { }
     }
 }

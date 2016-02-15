@@ -12,9 +12,9 @@ namespace MongoConnect.Repositories
 {
     public abstract class BaseRepository<TEntity> : Repository<TEntity> where TEntity : Entity
     {
-        protected BaseRepository(IMongoDatabase database, string collectionName)
+        protected BaseRepository(Context context, string collectionName)
         {
-            Collection = database.GetCollection<TEntity>(collectionName);
+            Collection = ((MongoDBContext)context).DatabaseSession.Database.GetCollection<TEntity>(collectionName);
         }
 
         public TEntity Get(Identity id)

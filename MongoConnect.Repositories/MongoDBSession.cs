@@ -15,8 +15,8 @@ namespace MongoConnect.Repositories
         protected MongoDBSession(string connectionUrl)
         {
             MongoUrl mongoUrl = MongoUrl.Create(connectionUrl);
-            _Database = new MongoClient(mongoUrl).GetDatabase(mongoUrl.DatabaseName);
-            _Context = new MongoDBContext();
+            Database = new MongoClient(mongoUrl).GetDatabase(mongoUrl.DatabaseName);
+            Context = new MongoDBContext(this);
         }
 
         public static void Initialize()
@@ -31,15 +31,9 @@ namespace MongoConnect.Repositories
             BsonSerializer.RegisterSerializer(typeof(Identity), IDSerializer);
             BsonSerializer.RegisterSerializer(typeof(ObjectIdentity), IDSerializer);
         }
-
-        public Context GetContext()
-        {
-            return _Context;
-        }
-
         private static bool IsInitialized = false;
 
-        protected IMongoDatabase _Database;
-        private MongoDBContext _Context;
+        internal IMongoDatabase Database { get; private set; }
+        public MongoDBContext Context { get; private set; }
     }
 }

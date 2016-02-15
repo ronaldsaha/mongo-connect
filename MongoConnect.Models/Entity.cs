@@ -9,7 +9,6 @@ namespace MongoConnect.Models
     public abstract class Entity
     {
         protected Entity() { Id = new NullIdentity(); }
-        protected Entity(Context context) : this(context.GetNewID()) { }
         protected Entity(Identity id) { Id = id; }
         public Identity Id { get; private set; }
     }

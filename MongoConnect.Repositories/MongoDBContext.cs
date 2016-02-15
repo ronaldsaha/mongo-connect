@@ -10,8 +10,9 @@ namespace MongoConnect.Repositories
 {
     public class MongoDBContext : Context
     {
-        public MongoDBContext()
+        public MongoDBContext(MongoDBSession databaseSession)
         {
+            DatabaseSession = databaseSession;
         }
         public override Identity GetEmptyID()
         {
@@ -21,5 +22,7 @@ namespace MongoConnect.Repositories
         {
             return new ObjectIdentity(ObjectId.GenerateNewId());
         }
+
+        public MongoDBSession DatabaseSession { get; private set; }
     }
 }

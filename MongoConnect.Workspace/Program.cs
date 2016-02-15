@@ -25,10 +25,10 @@ namespace MongoConnect.Workspace
 
         public static void CreateReadUpdateDelete(RepositorySession session)
         {
-            Context context = session.GetContext();
+            Context context = session.Context;
             PersonRepository personRepo = session.GetPersonRepository();
 
-            Person person = new Person(context, "This is test");
+            Person person = new Person("This is test");
 
             personRepo.Insert(person);
             Person personFromDB = personRepo.Get(person.Id);
