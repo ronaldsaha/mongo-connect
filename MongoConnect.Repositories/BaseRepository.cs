@@ -27,7 +27,8 @@ namespace MongoConnect.Repositories
         {
             get
             {
-                return Builders<TEntity>.Filter;
+                return new FilterDefinitionBuilder<TEntity>();
+                //return Builders<TEntity>.Filter;
             }
         }
 
@@ -51,33 +52,55 @@ namespace MongoConnect.Repositories
         {
             return Collection.Find(filter);
         }
+        private IFindFluent<TEntity, TEntity> Query(Expression<Func<TEntity, bool>> filter, int pageIndex, int pageSize)
+        {
+            return Collection.Find(filter).Skip(pageIndex * pageSize).Limit(pageSize);
+        }
         #endregion MongoSpecific
 
-        #region CRUD
-        public virtual TEntity Get(string id)
+        public TEntity FindOne(Identity id)
         {
-            return Find(i => ((ObjectIdentity)i.Id).Value == id).FirstOrDefault();
+            //return Find(i => i.Id == id).FirstOrDefault();
+            BsonDocument matchById = new BsonDocument().Add(new BsonElement("_id", new BsonObjectId(((ObjectIdentity)id).IdentityValue)));
+            return Collection.Find(matchById).FirstOrDefault();
         }
 
-        public virtual IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> filter)
+        public IEnumerable<TEntity> FindAll()
         {
-            return Query(filter).ToEnumerable();
+            return FindAll(i => i.Id, true);
+        }
+        public IEnumerable<TEntity> FindAll(Expression<Func<TEntity, object>> order, bool isAscending)
+        {
+            var query = Collection.Find(Builders<TEntity>.Filter.Empty);
+            return (isAscending? query.SortBy(order) : query.SortByDescending(order)).ToEnumerable();
+        }
+        public IEnumerable<TEntity> FindAll(int pageIndex, int pageSize)
+        {
+            return FindAll(i => i.Id, true, pageIndex, pageSize);
+        }
+        public IEnumerable<TEntity> FindAll(Expression<Func<TEntity, object>> order, bool isAscending, int pageIndex, int pageSize)
+        {
+            var query = Collection.Find(Builders<TEntity>.Filter.Empty).Skip(pageIndex * pageSize).Limit(pageSize);
+            return (isAscending ? query.SortBy(order) : query.SortByDescending(order)).ToEnumerable();
         }
 
-        public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> filter, int pageIndex, int size)
+        public IEnumerable<TEntity> FindMany(Expression<Func<TEntity, bool>> filter)
         {
-            return Find(filter, i => i.Id, pageIndex, size);
+            return FindMany(filter, i => i.Id, true);
         }
-
-        public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> filter, Expression<Func<TEntity, object>> order, int pageIndex, int size)
+        public IEnumerable<TEntity> FindMany(Expression<Func<TEntity, bool>> filter, Expression<Func<TEntity, object>> order, bool isAscending)
         {
-            return Find(filter, order, pageIndex, size, true);
+            var query = Query(filter);
+            return (isAscending ? query.SortBy(order) : query.SortByDescending(order)).ToEnumerable();
         }
-
-        public virtual IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> filter, Expression<Func<TEntity, object>> order, int pageIndex, int size, bool isDescending)
+        public IEnumerable<TEntity> FindMany(Expression<Func<TEntity, bool>> filter, int pageIndex, int pageSize)
         {
-            var query = Query(filter).Skip(pageIndex * size).Limit(size);
-            return (isDescending ? query.SortByDescending(order) : query.SortBy(order)).ToEnumerable();
+            return FindMany(filter, i => i.Id, true, pageIndex, pageSize);
+        }
+        public IEnumerable<TEntity> FindMany(Expression<Func<TEntity, bool>> filter, Expression<Func<TEntity, object>> order, bool isAscending, int pageIndex, int pageSize)
+        {
+            var query = Query(filter, pageIndex , pageSize);
+            return (isAscending ? query.SortBy(order) : query.SortByDescending(order)).ToEnumerable();
         }
 
         public virtual void Insert(TEntity entity)
@@ -138,7 +161,6 @@ namespace MongoConnect.Repositories
         {
             Collection.DeleteMany(filter);
         }
-        #endregion CRUD
 
         #region Simplicity
         public bool Any(Expression<Func<TEntity, bool>> filter)
@@ -152,15 +174,9 @@ namespace MongoConnect.Repositories
         public long Count(Expression<Func<TEntity, bool>> filter)
         {
             throw new NotImplementedException();
-    }
-    #endregion Simplicity
-
-
-    public TEntity Read(Identity id)
-        {
-            BsonDocument matchById = new BsonDocument().Add(new BsonElement("_id", new BsonObjectId(((ObjectIdentity)id).IdentityValue)));
-            return Collection.Find(matchById).FirstOrDefault();
         }
+        #endregion Simplicity
+
 
         public bool Update(TEntity entity)
         {
@@ -176,14 +192,6 @@ namespace MongoConnect.Repositories
             return result.DeletedCount == 1;
         }
 
-        public List<TEntity> ReadMany()
-        {
-            return Collection.Find(Builders<TEntity>.Filter.Empty).ToList();
-        }
-        public List<TEntity> ReadMany(int pageIndex, int pageSize)
-        {
-            return Collection.Find(Builders<TEntity>.Filter.Empty).Skip(GetOffset(pageIndex, pageSize)).Limit(pageSize).ToList();
-        }
         //public List<TEntity> ReadMany(MongoQuery query)
         //{
         //    throw new NotImplementedException();
@@ -284,145 +292,5 @@ namespace MongoConnect.Repositories
     //    {
     //        return _Collection.Remove(GetClientQuery()).Ok;
     //    }
-    //}
-
-
-    //public class Repository<TEntity> : IRepository<TEntity>
-    //    where T : Entity
-    //{
-    //    #region MongoSpecific
-    //    public Repository(string connectionString)
-    //    {
-    //        _Collection = Database<TEntity>.GetCollectionFromConnectionString(connectionString);
-    //    }
-
-    //    public IMongoCollection<TEntity> _Collection
-    //    {
-    //        get; private set;
-    //    }
-
-    //    public FilterDefinitionBuilder<TEntity> Filter
-    //    {
-    //        get
-    //        {
-    //            return Builders<TEntity>.Filter;
-    //        }
-    //    }
-
-    //    public UpdateDefinitionBuilder<TEntity> Updater
-    //    {
-    //        get
-    //        {
-    //            return Builders<TEntity>.Update;
-    //        }
-    //    }
-
-    //    public ProjectionDefinitionBuilder<TEntity> Project
-    //    {
-    //        get
-    //        {
-    //            return Builders<TEntity>.Projection;
-    //        }
-    //    }
-
-    //    private IFindFluent<TEntity, T> Query(Expression<Func<TEntity, bool>> filter)
-    //    {
-    //        return _Collection.Find(filter);
-    //    }
-    //    #endregion MongoSpecific
-
-    //    #region CRUD
-    //    public virtual T Get(string id)
-    //    {
-    //        return Find(i => ((ObjectIdentity)i.Id).Value == id).FirstOrDefault();
-    //    }
-
-    //    public virtual IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> filter)
-    //    {
-    //        return Query(filter).ToEnumerable();
-    //    }
-
-    //    public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> filter, int pageIndex, int size)
-    //    {
-    //        return Find(filter, i => i.Id, pageIndex, size);
-    //    }
-
-    //    public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> filter, Expression<Func<TEntity, object>> order, int pageIndex, int size)
-    //    {
-    //        return Find(filter, order, pageIndex, size, true);
-    //    }
-
-    //    public virtual IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> filter, Expression<Func<TEntity, object>> order, int pageIndex, int size, bool isDescending)
-    //    {
-    //        var query = Query(filter).Skip(pageIndex * size).Limit(size);
-    //        return (isDescending ? query.SortByDescending(order) : query.SortBy(order)).ToEnumerable();
-    //    }
-
-    //    public virtual void Insert(T entity)
-    //    {
-    //        _Collection.InsertOne(entity);
-    //    }
-
-    //    public virtual void Insert(IEnumerable<TEntity> entities)
-    //    {
-    //        _Collection.InsertMany(entities);
-    //    }
-
-    //    public virtual void Replace(T entity)
-    //    {
-    //        _Collection.ReplaceOne(i => i.Id == entity.Id, entity);
-    //    }
-
-    //    public void Replace(IEnumerable<TEntity> entities)
-    //    {
-    //        foreach (T entity in entities)
-    //        {
-    //            Replace(entity);
-    //        }
-    //    }
-
-    //    public bool Update<TField>(T entity, Expression<Func<TEntity, TField>> field, TField value)
-    //    {
-    //        return Update(entity, Updater.Set(field, value));
-    //    }
-
-    //    public virtual bool Update(T entity, UpdateDefinition<TEntity> update)
-    //    {
-    //        return Update(Filter.Eq(i => i.Id, entity.Id), update);
-    //    }
-
-    //    public bool Update<TField>(FilterDefinition<TEntity> filter, Expression<Func<TEntity, TField>> field, TField value)
-    //    {
-    //        return Update(filter, Updater.Set(field, value));
-    //    }
-
-    //    public bool Update(FilterDefinition<TEntity> filter, UpdateDefinition<TEntity> update)
-    //    {
-    //        //return _Collection.UpdateMany(filter, update.CurrentDate(i => i.ModifiedOn)).IsAcknowledged;
-    //        return true;
-    //    }
-
-    //    public void Delete(T entity)
-    //    {
-    //        Delete(((ObjectIdentity)entity.Id).Value);
-    //    }
-
-    //    public virtual void Delete(string id)
-    //    {
-    //        _Collection.DeleteOne(i => ((ObjectIdentity)i.Id).Value == id);
-    //    }
-
-    //    public void Delete(Expression<Func<T, bool>> filter)
-    //    {
-    //        _Collection.DeleteMany(filter);
-    //    }
-    //    #endregion CRUD
-
-    //    #region Simplicity
-    //    public bool Any(Expression<Func<T, bool>> filter)
-    //    {
-    //        return _Collection.AsQueryable<TEntity>().Any(filter);
-    //    }
-    //    #endregion Simplicity
     //}
 }
