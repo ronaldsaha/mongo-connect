@@ -23,8 +23,19 @@ namespace MongoConnect.Repositories
         IEnumerable<TEntity> FindMany(Expression<Func<TEntity, bool>> filter, int pageIndex, int pageSize);
         IEnumerable<TEntity> FindMany(Expression<Func<TEntity, bool>> filter, Expression<Func<TEntity, object>> order, bool isAscending, int pageIndex, int pageSize);
 
+        TEntity Find(Identity id);
+        IEnumerable<TEntity> Find();
+        IEnumerable<TEntity> Find(int pageIndex, int pageSize);
+        IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> filter);
+        IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> filter, int pageIndex, int size);
+        IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> filter, Expression<Func<TEntity, object>> order, int pageIndex, int size);
+        IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> filter, Expression<Func<TEntity, object>> order, int pageIndex, int size, bool isDescending);
+
         void Insert(TEntity entity);
         void Insert(IEnumerable<TEntity> entities);
+
+        bool Replace(TEntity entity);
+        //void Replace(IEnumerable<TEntity> entities);
 
         bool Update(TEntity entity, UpdateDefinition<TEntity> update);
         bool Update(FilterDefinition<TEntity> filter, UpdateDefinition<TEntity> update);
@@ -39,6 +50,13 @@ namespace MongoConnect.Repositories
         void Delete(Expression<Func<TEntity, bool>> filter);
 
         bool Exists(Expression<Func<TEntity, bool>> filter);
+
+        bool Delete(Identity id);
+        bool Delete(TEntity entity);
+        bool Delete(Expression<Func<TEntity, bool>> filter);
+
+        bool Any(Expression<Func<TEntity, bool>> filter);
+
         long Count();
         long Count(Expression<Func<TEntity, bool>> filter);
     }
