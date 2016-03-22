@@ -19,56 +19,38 @@ namespace MongoConnect.Repositories
 
         public TEntity Get(Identity id)
         {
-            //return Find(i => i.Id == id).FirstOrDefault();
-            BsonDocument matchById = new BsonDocument().Add(new BsonElement("_id", new BsonObjectId(((ObjectIdentity)id).IdentityValue)));
-            return Collection.Find(matchById).FirstOrDefault();
+            return Collection.Find(Filter.Eq<ObjectId>("_id", ((ObjectIdentity)id).IdentityValue)).FirstOrDefault();
         }
 
         public IEnumerable<TEntity> GetAll()
         {
-            return Collection.Find(Filter.Empty).ToList();
-        }
-        public IEnumerable<TEntity> GetAll(Expression<Func<TEntity, object>> order, bool isAscending)
-        {
-            var query = Collection.Find(Builders<TEntity>.Filter.Empty);
-            return (isAscending ? query.SortBy(order) : query.SortByDescending(order)).ToEnumerable();
+            return FindAll(Filter.Empty);
         }
         public IEnumerable<TEntity> GetAll(int pageIndex, int pageSize)
         {
-            return GetAll(i => i.Id, true, pageIndex, pageSize);
+            return FindAll(Filter.Empty, pageIndex, pageSize);
         }
-        public IEnumerable<TEntity> GetAll(Expression<Func<TEntity, object>> order, bool isAscending, int pageIndex, int pageSize)
+        public IEnumerable<TEntity> GetAll(SortDefinition<TEntity> order, int pageIndex, int pageSize)
         {
-            var query = Collection.Find(Builders<TEntity>.Filter.Empty).Skip(pageIndex * pageSize).Limit(pageSize);
-            return (isAscending ? query.SortBy(order) : query.SortByDescending(order)).ToEnumerable();
+            return FindAll(Filter.Empty, order, pageIndex, pageSize);
         }
 
-        public IEnumerable<TEntity> FindAll(Expression<Func<TEntity, bool>> filter)
+        public IEnumerable<TEntity> FindAll(FilterDefinition<TEntity> filter)
         {
-            return FindAll(filter, i => i.Id, true);
+            return Collection.Find(filter).ToEnumerable();
         }
-        public IEnumerable<TEntity> FindAll(Expression<Func<TEntity, bool>> filter, Expression<Func<TEntity, object>> order, bool isAscending)
+        public IEnumerable<TEntity> FindAll(FilterDefinition<TEntity> filter, int pageIndex, int pageSize)
         {
-            var query = Query(filter);
-            return (isAscending ? query.SortBy(order) : query.SortByDescending(order)).ToEnumerable();
+            return Collection.Find(filter).Skip(GetSkip(pageIndex, pageSize)).Limit(pageSize).ToEnumerable();
         }
-        public IEnumerable<TEntity> FindAll(Expression<Func<TEntity, bool>> filter, int pageIndex, int pageSize)
+        public IEnumerable<TEntity> FindAll(FilterDefinition<TEntity> filter, SortDefinition<TEntity> order, int pageIndex, int pageSize)
         {
-            return FindAll(filter, i => i.Id, true, pageIndex, pageSize);
-        }
-        public IEnumerable<TEntity> FindAll(Expression<Func<TEntity, bool>> filter, Expression<Func<TEntity, object>> order, bool isAscending, int pageIndex, int pageSize)
-        {
-            var query = Query(filter, pageIndex, pageSize);
-            return (isAscending ? query.SortBy(order) : query.SortByDescending(order)).ToEnumerable();
+            return Collection.Find(filter).Skip(GetSkip(pageIndex, pageSize)).Limit(pageSize).Sort(order).ToEnumerable();
         }
 
         public void Insert(TEntity entity)
         {
             Collection.InsertOne(entity);
-        }
-        public void Insert(IEnumerable<TEntity> entities)
-        {
-            Collection.InsertMany(entities);
         }
 
         public void Update(TEntity entity)
@@ -76,88 +58,46 @@ namespace MongoConnect.Repositories
             BsonDocument matchById = new BsonDocument().Add(new BsonElement("_id", new BsonObjectId(((ObjectIdentity)entity.Id).IdentityValue)));
             Collection.ReplaceOne(matchById, entity);
         }
-        //public void Update(IEnumerable<TEntity> entities)
-        //{
-        //    foreach (TEntity entity in entities)
-        //    {
-        //        Replace(entity);
-        //    }
-        //}
-
-        public void FindAndUpdate<TField>(FilterDefinition<TEntity> filter, Expression<Func<TEntity, TField>> field, TField value)
-        {
-            FindAndUpdate(filter, Updater.Set(field, value));
-        }
-        public void FindAndUpdate(FilterDefinition<TEntity> filter, UpdateDefinition<TEntity> update)
-        {
-            Collection.UpdateMany(filter, update);
-        }
 
         public void Delete(Identity id)
         {
-            BsonDocument matchById = new BsonDocument().Add(new BsonElement("_id", new BsonObjectId(((ObjectIdentity)id).IdentityValue)));
-            Collection.DeleteOne(matchById);
+            Delete(Filter.Eq<ObjectId>("_id", ((ObjectIdentity)id).IdentityValue));
         }
-        public void Delete(Expression<Func<TEntity, bool>> filter)
+        public void Delete(FilterDefinition<TEntity> filter)
         {
             Collection.DeleteMany(filter);
         }
 
         public void Empty()
         {
-            Collection.DeleteMany(Filter.Empty);
+            Delete(Filter.Empty);
         }
-        public bool Exists(Expression<Func<TEntity, bool>> filter)
+
+        public bool Exists(FilterDefinition<TEntity> filter)
         {
-            //return Collection.AsQueryable<TEntity>().Any(filter);
             return Count(filter) > 0;
         }
+
         public long Count()
         {
-            return Collection.Count(Filter.Empty);
+            return Count(Filter.Empty);
         }
-        public long Count(Expression<Func<TEntity, bool>> filter)
+        public long Count(FilterDefinition<TEntity> filter)
         {
             return Collection.Count(filter);
         }
 
-        protected IFindFluent<TEntity, TEntity> Query(Expression<Func<TEntity, bool>> filter)
-        {
-            return Collection.Find(filter);
-        }
-        protected IFindFluent<TEntity, TEntity> Query(Expression<Func<TEntity, bool>> filter, int pageIndex, int pageSize)
-        {
-            return Collection.Find(filter).Skip(GetOffset(pageIndex, pageSize)).Limit(pageSize);
-        }
-        protected int GetOffset(int pageIndex, int pageSize)
+        protected int GetSkip(int pageIndex, int pageSize)
         {
             return (pageIndex - 1) * pageSize;
         }
 
-        protected IMongoCollection<TEntity> Collection
-        {
-            get; set;
-        }
+        protected IMongoCollection<TEntity> Collection;
         protected FilterDefinitionBuilder<TEntity> Filter
         {
             get
             {
-                return new FilterDefinitionBuilder<TEntity>();
-                //return Builders<TEntity>.Filter;
-            }
-        }
-        protected UpdateDefinitionBuilder<TEntity> Updater
-        {
-            get
-            {
-                return Builders<TEntity>.Update;
-            }
-        }
-        protected ProjectionDefinitionBuilder<TEntity> Project
-        {
-            get
-            {
-                return Builders<TEntity>.Projection;
+                return Builders<TEntity>.Filter;
             }
         }
     }

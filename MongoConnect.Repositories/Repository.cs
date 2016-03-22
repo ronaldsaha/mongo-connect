@@ -14,30 +14,25 @@ namespace MongoConnect.Repositories
         TEntity Get(Identity id);
 
         IEnumerable<TEntity> GetAll();
-        IEnumerable<TEntity> GetAll(Expression<Func<TEntity, object>> order, bool isAscending);
         IEnumerable<TEntity> GetAll(int pageIndex, int pageSize);
-        IEnumerable<TEntity> GetAll(Expression<Func<TEntity, object>> order, bool isAscending, int pageIndex, int pageSize);
+        IEnumerable<TEntity> GetAll(SortDefinition<TEntity> order, int pageIndex, int pageSize);
 
-        IEnumerable<TEntity> FindAll(Expression<Func<TEntity, bool>> filter);
-        IEnumerable<TEntity> FindAll(Expression<Func<TEntity, bool>> filter, Expression<Func<TEntity, object>> order, bool isAscending);
-        IEnumerable<TEntity> FindAll(Expression<Func<TEntity, bool>> filter, int pageIndex, int pageSize);
-        IEnumerable<TEntity> FindAll(Expression<Func<TEntity, bool>> filter, Expression<Func<TEntity, object>> order, bool isAscending, int pageIndex, int pageSize);
+        IEnumerable<TEntity> FindAll(FilterDefinition<TEntity> filter);
+        IEnumerable<TEntity> FindAll(FilterDefinition<TEntity> filter, int pageIndex, int pageSize);
+        IEnumerable<TEntity> FindAll(FilterDefinition<TEntity> filter, SortDefinition<TEntity> order, int pageIndex, int pageSize);
 
         void Insert(TEntity entity);
-        void Insert(IEnumerable<TEntity> entities);
 
         void Update(TEntity entity);
-        //void Update(IEnumerable<TEntity> entities);
-
-        void FindAndUpdate<TField>(FilterDefinition<TEntity> filter, Expression<Func<TEntity, TField>> field, TField value);
-        void FindAndUpdate(FilterDefinition<TEntity> filter, UpdateDefinition<TEntity> update);
 
         void Delete(Identity id);
-        void Delete(Expression<Func<TEntity, bool>> filter);
+        void Delete(FilterDefinition<TEntity> filter);
 
         void Empty();
-        bool Exists(Expression<Func<TEntity, bool>> filter);
+
+        bool Exists(FilterDefinition<TEntity> filter);
+
         long Count();
-        long Count(Expression<Func<TEntity, bool>> filter);
+        long Count(FilterDefinition<TEntity> filter);
     }
 }
