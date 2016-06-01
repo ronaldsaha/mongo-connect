@@ -53,9 +53,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseRepository.cs" />
+    <Compile Include="BaseRegistrar.cs" />
     <Compile Include="Repository.cs" />
-    <Compile Include="MongoDBContext.cs" />
-    <Compile Include="MongoDBSession.cs" />
+    <Compile Include="BaseContext.cs" />
+    <Compile Include="BaseSession.cs" />
     <Compile Include="ObjectIdentity.cs" />
     <Compile Include="ObjectIDGenerator.cs" />
     <Compile Include="ObjectIDSerializer.cs" />

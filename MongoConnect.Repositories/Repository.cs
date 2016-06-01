@@ -21,9 +21,9 @@ namespace MongoConnect.Repositories
         IEnumerable<TEntity> FindAll(FilterDefinition<TEntity> filter, int pageIndex, int pageSize);
         IEnumerable<TEntity> FindAll(FilterDefinition<TEntity> filter, SortDefinition<TEntity> order, int pageIndex, int pageSize);
 
-        void Insert(TEntity entity);
+        bool Insert(TEntity entity);
 
-        void Update(TEntity entity);
+        bool Update(TEntity entity);
 
         void Delete(Identity id);
         void Delete(FilterDefinition<TEntity> filter);

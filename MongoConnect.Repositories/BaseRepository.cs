@@ -14,7 +14,7 @@ namespace MongoConnect.Repositories
     {
         protected BaseRepository(Context context, string collectionName)
         {
-            Collection = ((MongoDBContext)context).DatabaseSession.Database.GetCollection<TEntity>(collectionName);
+            Collection = ((BaseContext)context).DatabaseSession.Database.GetCollection<TEntity>(collectionName);
         }
 
         public TEntity Get(Identity id)
@@ -48,15 +48,16 @@ namespace MongoConnect.Repositories
             return Collection.Find(filter).Skip(GetSkip(pageIndex, pageSize)).Limit(pageSize).Sort(order).ToEnumerable();
         }
 
-        public void Insert(TEntity entity)
+        public bool Insert(TEntity entity)
         {
             Collection.InsertOne(entity);
+            return !entity.Id.IsNull;
         }
 
-        public void Update(TEntity entity)
+        public bool Update(TEntity entity)
         {
             BsonDocument matchById = new BsonDocument().Add(new BsonElement("_id", new BsonObjectId(((ObjectIdentity)entity.Id).IdentityValue)));
-            Collection.ReplaceOne(matchById, entity);
+            return Collection.ReplaceOne(matchById, entity).IsAcknowledged;
         }
 
         public void Delete(Identity id)
