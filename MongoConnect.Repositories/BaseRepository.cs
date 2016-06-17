@@ -17,33 +17,36 @@ namespace MongoConnect.Repositories
             Collection = ((BaseContext)context).DatabaseSession.Database.GetCollection<TEntity>(collectionName);
         }
 
-        public TEntity Get(Identity id)
+        public TEntity Find(Identity id)
         {
             return Collection.Find(Filter.Eq<ObjectId>("_id", ((ObjectIdentity)id).IdentityValue)).FirstOrDefault();
         }
+        protected TEntity Find(FilterDefinition<TEntity> filter)
+        {
+            return Collection.Find(filter).FirstOrDefault();
+        }
 
-        public IEnumerable<TEntity> GetAll()
+        public IEnumerable<TEntity> FindAll()
         {
             return FindAll(Filter.Empty);
         }
-        public IEnumerable<TEntity> GetAll(int pageIndex, int pageSize)
+        public IEnumerable<TEntity> FindAll(int pageIndex, int pageSize)
         {
             return FindAll(Filter.Empty, pageIndex, pageSize);
         }
-        public IEnumerable<TEntity> GetAll(SortDefinition<TEntity> order, int pageIndex, int pageSize)
+        protected IEnumerable<TEntity> FindAll(SortDefinition<TEntity> order, int pageIndex, int pageSize)
         {
             return FindAll(Filter.Empty, order, pageIndex, pageSize);
         }
-
-        public IEnumerable<TEntity> FindAll(FilterDefinition<TEntity> filter)
+        protected IEnumerable<TEntity> FindAll(FilterDefinition<TEntity> filter)
         {
             return Collection.Find(filter).ToEnumerable();
         }
-        public IEnumerable<TEntity> FindAll(FilterDefinition<TEntity> filter, int pageIndex, int pageSize)
+        protected IEnumerable<TEntity> FindAll(FilterDefinition<TEntity> filter, int pageIndex, int pageSize)
         {
             return Collection.Find(filter).Skip(GetSkip(pageIndex, pageSize)).Limit(pageSize).ToEnumerable();
         }
-        public IEnumerable<TEntity> FindAll(FilterDefinition<TEntity> filter, SortDefinition<TEntity> order, int pageIndex, int pageSize)
+        protected IEnumerable<TEntity> FindAll(FilterDefinition<TEntity> filter, SortDefinition<TEntity> order, int pageIndex, int pageSize)
         {
             return Collection.Find(filter).Skip(GetSkip(pageIndex, pageSize)).Limit(pageSize).Sort(order).ToEnumerable();
         }
@@ -64,7 +67,7 @@ namespace MongoConnect.Repositories
         {
             Delete(Filter.Eq<ObjectId>("_id", ((ObjectIdentity)id).IdentityValue));
         }
-        public void Delete(FilterDefinition<TEntity> filter)
+        protected void Delete(FilterDefinition<TEntity> filter)
         {
             Collection.DeleteMany(filter);
         }
@@ -74,7 +77,7 @@ namespace MongoConnect.Repositories
             Delete(Filter.Empty);
         }
 
-        public bool Exists(FilterDefinition<TEntity> filter)
+        protected bool Exists(FilterDefinition<TEntity> filter)
         {
             return Count(filter) > 0;
         }
@@ -83,7 +86,7 @@ namespace MongoConnect.Repositories
         {
             return Count(Filter.Empty);
         }
-        public long Count(FilterDefinition<TEntity> filter)
+        protected long Count(FilterDefinition<TEntity> filter)
         {
             return Collection.Count(filter);
         }

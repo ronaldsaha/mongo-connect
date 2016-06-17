@@ -13,5 +13,12 @@ namespace MongoConnect.Models
         public abstract Identity GetNewID();
         public abstract Identity ParseID(string id);
         public abstract string IDToString(Identity id);
+
+        public TEntity CreateEntity<TEntity>() where TEntity : Entity, new()
+        {
+            TEntity entity = new TEntity();
+            entity.Id = GetEmptyID();
+            return entity;
+        }
     }
 }

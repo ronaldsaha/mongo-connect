@@ -14,7 +14,7 @@ namespace MongoConnect.Workspace
         {
             try
             {
-                RepositorySession.Initialize();
+                RepositorySession.Initialize<RepositoryRegistrar>();
                 string connectionUrl = "mongodb://localhost/MongoConnectTest";
                 RepositorySession session = new RepositorySession(connectionUrl);
 
@@ -31,7 +31,7 @@ namespace MongoConnect.Workspace
             Person person = new Person("This is test");
 
             personRepo.Insert(person);
-            Person personFromDB = personRepo.Get(person.Id);
+            Person personFromDB = personRepo.Find(person.Id);
             personFromDB.FullName = "Name Changed";
             personRepo.Update(personFromDB);
             personRepo.Delete(person.Id);

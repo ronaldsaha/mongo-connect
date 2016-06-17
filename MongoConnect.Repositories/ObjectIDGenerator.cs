@@ -18,6 +18,8 @@ namespace MongoConnect.Repositories
         {
             if (id == null)
                 return true;
+            if (id is MongoConnect.Models.NullIdentity)
+                throw new System.InvalidOperationException("Use Context.CreateEntity to create new entity.");
             ObjectIdentity _id = id as ObjectIdentity;
             return _id.IsNull;
         }

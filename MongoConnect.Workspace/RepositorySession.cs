@@ -1,4 +1,5 @@
-﻿using MongoConnect.Repositories;
+﻿using MongoConnect.Models;
+using MongoConnect.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +8,14 @@ using System.Threading.Tasks;
 
 namespace MongoConnect.Workspace
 {
-    public class RepositorySession : MongoDBSession
+    internal class RepositorySession : BaseSession
     {
         public RepositorySession(string connectionUrl) : base(connectionUrl) { }
+
+        public Context GetContext()
+        {
+            return this.Context;
+        }
 
         public PersonRepository GetPersonRepository()
         {

@@ -26,6 +26,6 @@ namespace MongoConnect.Repositories
         
 
         internal IMongoDatabase Database { get; private set; }
-        protected Context Context { get; private set; }
+        public Context Context { get; private set; }
     }
 }

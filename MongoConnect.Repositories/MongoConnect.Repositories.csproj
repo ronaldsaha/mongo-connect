@@ -54,7 +54,6 @@
   <ItemGroup>
     <Compile Include="BaseRepository.cs" />
     <Compile Include="BaseRegistrar.cs" />
-    <Compile Include="Repository.cs" />
     <Compile Include="BaseContext.cs" />
     <Compile Include="BaseSession.cs" />
     <Compile Include="ObjectIdentity.cs" />
