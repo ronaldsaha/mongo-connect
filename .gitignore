@@ -6,6 +6,8 @@ dist
 packages_typescript
 src/scripts/**/*.js
 src/scripts/**/*.js.map
+copy_bineries.bat
+update_nuget.bat
 
 ########################################
 ########################################
