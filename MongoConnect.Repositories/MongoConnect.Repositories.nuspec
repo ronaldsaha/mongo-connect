@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>MongoConnect.Repositories</id>
-    <version>0.0.3</version>
+    <version>0.0.4</version>
     <title>MongoConnect.Repositories</title>
     <authors>Ronald Roni Saha</authors>
     <owners>Ronald Roni Saha</owners>
@@ -11,10 +11,10 @@
     <description>Description</description>
     <copyright>Copyright ©  2016</copyright>
     <dependencies>
-      <dependency id="MongoDB.Bson" version="2.2.3" />
-      <dependency id="MongoDB.Driver" version="2.2.3" />
-      <dependency id="MongoDB.Driver.Core" version="2.2.3" />
-      <dependency id="MongoConnect.Models" version="0.0.2" />
+      <dependency id="MongoDB.Bson" version="2.2.4" />
+      <dependency id="MongoDB.Driver" version="2.2.4" />
+      <dependency id="MongoDB.Driver.Core" version="2.2.4" />
+      <dependency id="MongoConnect.Models" version="0.0.4" />
     </dependencies>
   </metadata>
 </package>
