@@ -10,7 +10,10 @@ namespace MongoConnect.Models
     {
         TEntity Find(Identity id);
         IEnumerable<TEntity> FindAll();
+        IEnumerable<TEntity> FindAll(IEnumerable<Identity> ids);
         IEnumerable<TEntity> FindAll(int pageIndex, int pageSize);
+        IEnumerable<TEntity> FindAll(SortOrder order);
+        IEnumerable<TEntity> FindAll(SortOrder order, int pageIndex, int pageSize);
         bool Insert(TEntity entity);
         bool Update(TEntity entity);
         void Delete(Identity id);
@@ -18,7 +21,6 @@ namespace MongoConnect.Models
         long Count();
 
         //TEntity Find(FilterDefinition<TEntity> filter);
-        //IEnumerable<TEntity> FindAll(SortDefinition<TEntity> order, int pageIndex, int pageSize);
         //IEnumerable<TEntity> FindAll(FilterDefinition<TEntity> filter);
         //IEnumerable<TEntity> FindAll(FilterDefinition<TEntity> filter, int pageIndex, int pageSize);
         //IEnumerable<TEntity> FindAll(FilterDefinition<TEntity> filter, SortDefinition<TEntity> order, int pageIndex, int pageSize);

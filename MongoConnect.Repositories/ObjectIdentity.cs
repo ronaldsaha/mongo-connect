@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MongoConnect.Repositories
 {
-    internal class ObjectIdentity : Identity
+    public class ObjectIdentity : Identity
     {
         public ObjectIdentity()
         {
