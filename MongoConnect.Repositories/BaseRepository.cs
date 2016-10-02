@@ -12,9 +12,9 @@ namespace MongoConnect.Repositories
 {
     public abstract class BaseRepository<TEntity> : Repository<TEntity> where TEntity : Entity
     {
-        protected BaseRepository(Context context, string collectionName)
+        protected BaseRepository(Context context, MongoSession session, string collectionName)
         {
-            Collection = ((BaseContext)context).DatabaseSession.Database.GetCollection<TEntity>(collectionName);
+            Collection = ((MongoSession)session).Database.GetCollection<TEntity>(collectionName);
         }
 
         public virtual TEntity Find(Identity id)

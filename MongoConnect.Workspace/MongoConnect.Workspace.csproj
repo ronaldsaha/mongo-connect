@@ -57,11 +57,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Person.cs" />
-    <Compile Include="PersonRepository.cs" />
+    <Compile Include="Repositories\PersonRepository.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RepositoryRegistrar.cs" />
-    <Compile Include="RepositorySession.cs" />
+    <Compile Include="Repositories\RepositorySessionFactory.cs" />
+    <Compile Include="Repositories\RepositoryRegistrar.cs" />
+    <Compile Include="Repositories\RepositorySession.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

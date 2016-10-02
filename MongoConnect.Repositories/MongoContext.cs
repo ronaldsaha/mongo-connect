@@ -1,5 +1,6 @@
 using MongoConnect.Models;
 using MongoDB.Bson;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,12 +9,9 @@ using System.Threading.Tasks;
 
 namespace MongoConnect.Repositories
 {
-    public class BaseContext : Context
+    public class MongoContext : Context
     {
-        public BaseContext(BaseSession databaseSession)
-        {
-            DatabaseSession = databaseSession;
-        }
+        public MongoContext() { }
         public override Identity GetEmptyID()
         {
             return new ObjectIdentity();
@@ -35,7 +33,5 @@ namespace MongoConnect.Repositories
                 return string.Empty;
             return id.ToString();
         }
-
-        public BaseSession DatabaseSession { get; private set; }
     }
 }

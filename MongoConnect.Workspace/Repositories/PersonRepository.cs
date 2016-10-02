@@ -7,10 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MongoConnect.Workspace
+namespace MongoConnect.Workspace.Repositories
 {
     public class PersonRepository : BaseRepository<Person>
     {
-        public PersonRepository(Context context, string collectionName) : base(context, collectionName) { }
+        public PersonRepository(Context context, MongoSession session, string collectionName)
+            : base(context, session, collectionName) { }
     }
 }

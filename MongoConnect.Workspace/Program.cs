@@ -1,5 +1,6 @@
 ﻿using MongoConnect.Models;
 using MongoConnect.Repositories;
+using MongoConnect.Workspace.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,11 +15,11 @@ namespace MongoConnect.Workspace
         {
             try
             {
-                RepositorySession.Initialize<RepositoryRegistrar>();
-                string connectionUrl = "mongodb://localhost/MongoConnectTest";
-                RepositorySession session = new RepositorySession(connectionUrl);
+                RepositorySessionFactory.Initialize();
+                RepositorySessionFactory repositorySessionFactory = new RepositorySessionFactory("mongodb://localhost/MongoConnectTest");
+                RepositorySession repositroySession = repositorySessionFactory.CreateSession(repositorySessionFactory.CreateContext());
 
-                CreateReadUpdateDelete(session);
+                CreateReadUpdateDelete(repositroySession);
             }
             catch (Exception e) { }
         }

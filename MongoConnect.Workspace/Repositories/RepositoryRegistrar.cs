@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MongoConnect.Workspace
+namespace MongoConnect.Workspace.Repositories
 {
     internal class RepositoryRegistrar : BaseRegistrar
     {

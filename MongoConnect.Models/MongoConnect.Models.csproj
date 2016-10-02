@@ -52,6 +52,8 @@
     <Compile Include="SortDirection.cs" />
     <Compile Include="SortOrder.cs" />
     <Compile Include="TimestampedEntity.cs" />
+    <Compile Include="WorkspaceContext.cs" />
+    <Compile Include="WorkspaceEntity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MongoConnect.Models.nuspec" />

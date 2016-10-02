@@ -9,23 +9,32 @@ using System.Threading.Tasks;
 
 namespace MongoConnect.Repositories
 {
-    public abstract class BaseSession
+    public abstract class MongoSession
     {
-        private BaseSession() { }
-        protected BaseSession(string connectionUrl)
+        protected MongoSession(Context context, string connectionUrl)
         {
+            Context = context;
             MongoUrl mongoUrl = MongoUrl.Create(connectionUrl);
             Database = new MongoClient(mongoUrl).GetDatabase(mongoUrl.DatabaseName);
-            Context = new BaseContext(this);
         }
 
         public static void Initialize<T>() where T : BaseRegistrar, new()
         {
             new T().Register();
         }
-        
 
-        internal IMongoDatabase Database { get; private set; }
+        public static Context CreateContext()
+        {
+            return new MongoContext();
+        }
+
+        public static Context CreateContext(string connectionUrl, string workspaceKey)
+        {
+            // TODO: ..
+            return new MongoWorkspaceContext(new NullIdentity());
+        }
+
         public Context Context { get; private set; }
+        internal IMongoDatabase Database { get; private set; }
     }
 }
