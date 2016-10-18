@@ -17,7 +17,8 @@ namespace MongoConnect.Workspace
             {
                 RepositorySessionFactory.Initialize();
                 RepositorySessionFactory repositorySessionFactory = new RepositorySessionFactory("mongodb://localhost/MongoConnectTest");
-                RepositorySession repositroySession = repositorySessionFactory.CreateSession(repositorySessionFactory.CreateContext());
+                Context context = repositorySessionFactory.CreateContext();
+                RepositorySession repositroySession = repositorySessionFactory.CreateSession(context);
 
                 CreateReadUpdateDelete(repositroySession);
             }

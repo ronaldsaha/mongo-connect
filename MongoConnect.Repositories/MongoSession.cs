@@ -11,9 +11,8 @@ namespace MongoConnect.Repositories
 {
     public abstract class MongoSession
     {
-        protected MongoSession(Context context, string connectionUrl)
+        protected MongoSession(string connectionUrl)
         {
-            Context = context;
             MongoUrl mongoUrl = MongoUrl.Create(connectionUrl);
             Database = new MongoClient(mongoUrl).GetDatabase(mongoUrl.DatabaseName);
         }
@@ -28,13 +27,11 @@ namespace MongoConnect.Repositories
             return new MongoContext();
         }
 
-        public static Context CreateContext(string connectionUrl, string workspaceKey)
+        public static Context CreateContext(Entity entity)
         {
-            // TODO: ..
-            return new MongoWorkspaceContext(new NullIdentity());
+            return new MongoWorkspaceContext(entity);
         }
 
-        public Context Context { get; private set; }
         internal IMongoDatabase Database { get; private set; }
     }
 }

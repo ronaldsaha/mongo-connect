@@ -9,13 +9,12 @@ namespace MongoConnect.Models
     public abstract class WorkspaceEntity : Entity
     {
         public WorkspaceEntity() : base() { WorkspaceId = new NullIdentity(); }
-
-        internal override void SetContext(Context context)
-        {
-            base.SetContext(context);
-            WorkspaceId = ((WorkspaceContext)context).WorkspaceId;
-        }
-
+        public WorkspaceEntity(Identity id) : base(id) { WorkspaceId = new NullIdentity(); }
         public Identity WorkspaceId { get; internal set; }
+        public override void UpdateContext(Context context)
+        {
+            //base.UpdateContext(context);
+            WorkspaceId = ((WorkspaceContext)context).Workspace.Id;
+        }
     }
 }

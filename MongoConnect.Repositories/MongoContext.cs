@@ -12,22 +12,22 @@ namespace MongoConnect.Repositories
     public class MongoContext : Context
     {
         public MongoContext() { }
-        public override Identity GetEmptyID()
+        public Identity GetEmptyID()
         {
             return new ObjectIdentity();
         }
-        public override Identity GetNewID()
+        public Identity GetNewID()
         {
             return new ObjectIdentity(ObjectId.GenerateNewId());
         }
-        public override Identity ParseID(string id)
+        public Identity ParseID(string id)
         {
             ObjectId objectId = ObjectId.Empty;
             ObjectId.TryParse(id, out objectId);
             return new ObjectIdentity(objectId); ;
         }
 
-        public override string IDToString(Identity id)
+        public string IDToString(Identity id)
         {
             if (id.IsNull)
                 return string.Empty;

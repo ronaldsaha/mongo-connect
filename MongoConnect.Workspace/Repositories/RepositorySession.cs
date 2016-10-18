@@ -11,11 +11,13 @@ namespace MongoConnect.Workspace.Repositories
     public class RepositorySession : MongoSession
     {
         public RepositorySession(Context context, string connectionUrl)
-            : base(context, connectionUrl) { }
+            : base(connectionUrl) { Context = context; }
 
         public PersonRepository GetPersonRepository()
         {
             return new PersonRepository(Context, this, "Person");
         }
+
+        public Context Context;
     }
 }
