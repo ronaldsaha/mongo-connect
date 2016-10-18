@@ -14,11 +14,6 @@ namespace MongoConnect.Workspace.Repositories
             ConnectionString = connectionString;
         }
 
-        public RepositorySession CreateSession(Context context)
-        {
-            return new RepositorySession(context, ConnectionString);
-        }
-
         public static void Initialize()
         {
             RepositorySession.Initialize<RepositoryRegistrar>();
@@ -29,9 +24,9 @@ namespace MongoConnect.Workspace.Repositories
             return RepositorySession.CreateContext();
         }
 
-        public Context CreateContext(string workspaceKey)
+        public RepositorySession CreateSession(Context context)
         {
-            return RepositorySession.CreateContext(ConnectionString, workspaceKey);
+            return new RepositorySession(context, ConnectionString);
         }
 
         private string ConnectionString { get; set; }

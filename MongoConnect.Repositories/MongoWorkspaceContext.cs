@@ -8,13 +8,13 @@ using MongoConnect.Models;
 
 namespace MongoConnect.Repositories
 {
-    public class MongoWorkspaceContext : MongoContext, WorkspaceContext
+    public class MongoWorkspaceContext : MongoContext, Context, WorkspaceContext
     {
-        public MongoWorkspaceContext(Identity workspaceId) : base()
+        public MongoWorkspaceContext(Entity workspace) : base()
         {
-            WorkspaceId = workspaceId;
+            Workspace = workspace;
         }
 
-        public Identity WorkspaceId { get; internal set; }
+        public Entity Workspace { get; internal set; }
     }
 }

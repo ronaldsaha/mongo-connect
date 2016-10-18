@@ -14,7 +14,10 @@ namespace MongoConnect.Repositories
     {
         protected BaseRepository(Context context, MongoSession session, string collectionName)
         {
-            Collection = ((MongoSession)session).Database.GetCollection<TEntity>(collectionName);
+            if (context is MongoWorkspaceContext && typeof(TEntity).IsSubclassOf(typeof(WorkspaceEntity)))
+                Collection = new WorkspaceCollection<TEntity>(context, session, collectionName);
+            else
+                Collection = new BasicCollection<TEntity>(context, session, collectionName);
         }
 
         public virtual TEntity Find(Identity id)
@@ -31,7 +34,7 @@ namespace MongoConnect.Repositories
             return FindAll(Filter.Empty);
         }
         public virtual IEnumerable<TEntity> FindAll(IEnumerable<Identity> ids)
-        {            
+        {
             return FindAll(Filter.In<ObjectId>("_id", ConvertToObjectId(ids)));
         }
         public virtual IEnumerable<TEntity> FindAll(int pageIndex, int pageSize)
@@ -77,13 +80,13 @@ namespace MongoConnect.Repositories
 
         public virtual bool Update(TEntity entity)
         {
-            BsonDocument matchById = new BsonDocument().Add(new BsonElement("_id", new BsonObjectId(((ObjectIdentity)entity.Id).IdentityValue)));
-            return Collection.ReplaceOne(matchById, entity).IsAcknowledged;
+            //BsonDocument matchById = new BsonDocument().Add(new BsonElement("_id", new BsonObjectId(((ObjectIdentity)entity.Id).IdentityValue)));
+            return Collection.ReplaceOne(Filter.Eq<ObjectId>("_id", ((ObjectIdentity)entity.Id).IdentityValue), entity).IsAcknowledged;
         }
         protected virtual bool Update(Identity id, UpdateDefinition<TEntity> updateValue)
         {
-            BsonDocument matchById = new BsonDocument().Add(new BsonElement("_id", new BsonObjectId(((ObjectIdentity)id).IdentityValue)));
-            return Collection.UpdateOne(matchById, updateValue).IsAcknowledged;
+            //BsonDocument matchById = new BsonDocument().Add(new BsonElement("_id", new BsonObjectId(((ObjectIdentity)id).IdentityValue)));
+            return Collection.UpdateOne(Filter.Eq<ObjectId>("_id", ((ObjectIdentity)id).IdentityValue), updateValue).IsAcknowledged;
         }
 
         public virtual void Delete(Identity id)
@@ -137,7 +140,8 @@ namespace MongoConnect.Repositories
             return ((ObjectIdentity)id).IdentityValue;
         }
 
-        protected IMongoCollection<TEntity> Collection;
+        //private MongoContext Context;
+        private BasicCollection<TEntity> Collection;
         protected FilterDefinitionBuilder<TEntity> Filter
         {
             get

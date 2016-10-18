@@ -8,6 +8,6 @@ namespace MongoConnect.Models
 {
     public interface WorkspaceContext
     {
-        Identity WorkspaceId { get; }
+        Entity Workspace { get; }
     }
 }

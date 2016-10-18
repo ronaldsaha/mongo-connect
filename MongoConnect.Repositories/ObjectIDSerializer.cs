@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MongoConnect.Repositories
 {
-    internal class ObjectIDSerializer : SerializerBase<Identity>
+    public class ObjectIDSerializer : SerializerBase<Identity>
     {
         public override Identity Deserialize(BsonDeserializationContext context, BsonDeserializationArgs args)
         {

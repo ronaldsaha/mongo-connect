@@ -8,13 +8,13 @@ namespace MongoConnect.Models
 {
     public abstract class Entity
     {
-        protected Entity() { Id = new NullIdentity(); }
-
-        internal virtual void SetContext(Context context)
-        {
-            Id = context.GetNewID();
-        }
-
+        protected Entity() : this(new NullIdentity()) { }
+        protected Entity(Identity id) { Id = id; }
         public Identity Id { get; internal set; }
+        public virtual void UpdateContext(Context context)
+        {
+            //if (Id.IsNull)
+            //    Id = context.GetNewID();
+        }
     }
 }
