@@ -1,4 +1,5 @@
 ﻿using MongoConnect.Models;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MongoConnect.Repositories
 {
-    internal class BasicCollection<TEntity> where TEntity : Entity
+    public class BasicCollection<TEntity> where TEntity : Entity
     {
         public BasicCollection(Context context, MongoSession session, string collectionName)
         {
@@ -53,12 +54,27 @@ namespace MongoConnect.Repositories
             return Collection.UpdateOne(ProcessFilter(filter), update);
         }
 
+        public virtual IAsyncCursor<TResult> Aggregate<TResult>(IPipelineStageDefinition[] pipeline)
+        {
+            return Collection.Aggregate<TResult>(pipeline);
+        }
+
+        public virtual IAggregateFluent<TEntity> Aggregate()
+        {
+            return Collection.Aggregate();
+        }
+
+        public virtual IAsyncCursor<TReturn> Distinct<TReturn>(FieldDefinition<TEntity, TReturn> field, FilterDefinition<TEntity> filter)
+        {
+            return Collection.Distinct<TReturn>(field, ProcessFilter(filter));
+        }
+
         protected virtual FilterDefinition<TEntity> ProcessFilter(FilterDefinition<TEntity> filter)
         {
             return filter;
         }
 
-        private IMongoCollection<TEntity> Collection;
+        protected IMongoCollection<TEntity> Collection;
         protected Context Context;
     }
 }

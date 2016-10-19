@@ -141,7 +141,7 @@ namespace MongoConnect.Repositories
         }
 
         //private MongoContext Context;
-        private BasicCollection<TEntity> Collection;
+        protected BasicCollection<TEntity> Collection;
         protected FilterDefinitionBuilder<TEntity> Filter
         {
             get
