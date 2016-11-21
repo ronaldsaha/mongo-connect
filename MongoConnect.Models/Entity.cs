@@ -13,8 +13,8 @@ namespace MongoConnect.Models
         public Identity Id { get; internal set; }
         public virtual void UpdateContext(Context context)
         {
-            //if (Id.IsNull)
-            //    Id = context.GetNewID();
+            if (Id.IsNull)
+                Id = context.GetNewID();
         }
     }
 }

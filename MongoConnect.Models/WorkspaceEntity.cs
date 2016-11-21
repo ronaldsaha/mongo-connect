@@ -13,7 +13,7 @@ namespace MongoConnect.Models
         public Identity WorkspaceId { get; internal set; }
         public override void UpdateContext(Context context)
         {
-            //base.UpdateContext(context);
+            base.UpdateContext(context);
             WorkspaceId = ((WorkspaceContext)context).Workspace.Id;
         }
     }
