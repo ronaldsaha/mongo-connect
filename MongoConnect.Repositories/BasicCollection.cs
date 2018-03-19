@@ -11,10 +11,10 @@ namespace MongoConnect.Repositories
 {
     public class BasicCollection<TEntity> where TEntity : Entity
     {
-        public BasicCollection(Context context, MongoSession session, string collectionName)
+        public BasicCollection(MongoContext context, string collectionName)
         {
             Context = context;
-            Collection = ((MongoSession)session).Database.GetCollection<TEntity>(collectionName);
+            Collection = context.Database.GetCollection<TEntity>(collectionName);
         }
 
         public IFindFluent<TEntity, TEntity> Find(FilterDefinition<TEntity> filter)
@@ -37,19 +37,18 @@ namespace MongoConnect.Repositories
             return Collection.DeleteOne(ProcessFilter(filter));
         }
 
-        public void InsertOne(TEntity entity)
+        public virtual void InsertOne(TEntity entity)
         {
-            entity.UpdateContext(Context);
+            UpdateEntity(entity);
             Collection.InsertOne(entity);
         }
 
-        public ReplaceOneResult ReplaceOne(FilterDefinition<TEntity> filter, TEntity entity)
+        public virtual ReplaceOneResult ReplaceOne(FilterDefinition<TEntity> filter, TEntity entity)
         {
-            entity.UpdateContext(Context);
             return Collection.ReplaceOne(ProcessFilter(filter), entity);
         }
 
-        public UpdateResult UpdateOne(FilterDefinition<TEntity> filter, UpdateDefinition<TEntity> update)
+        public virtual UpdateResult UpdateOne(FilterDefinition<TEntity> filter, UpdateDefinition<TEntity> update)
         {
             return Collection.UpdateOne(ProcessFilter(filter), update);
         }
@@ -73,8 +72,14 @@ namespace MongoConnect.Repositories
         {
             return filter;
         }
+        protected virtual void UpdateEntity(TEntity entity)
+        {
+            if (entity.Id.IsNull)
+                entity.Id = Context.GetNewID();
+        }
 
+
+        protected MongoContext Context;
         protected IMongoCollection<TEntity> Collection;
-        protected Context Context;
     }
 }

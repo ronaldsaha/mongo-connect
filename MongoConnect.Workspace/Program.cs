@@ -1,5 +1,6 @@
 ﻿using MongoConnect.Models;
 using MongoConnect.Repositories;
+using MongoConnect.Workspace.Models;
 using MongoConnect.Workspace.Repositories;
 using System;
 using System.Collections.Generic;
@@ -15,28 +16,40 @@ namespace MongoConnect.Workspace
         {
             try
             {
-                RepositorySessionFactory.Initialize();
-                RepositorySessionFactory repositorySessionFactory = new RepositorySessionFactory("mongodb://localhost/MongoConnectTest");
-                Context context = repositorySessionFactory.CreateContext();
-                RepositorySession repositroySession = repositorySessionFactory.CreateSession(context);
+                ApplicationContext applicationContext = new ApplicationContext();
+                //RepositoryFactory.Initialize("mongodb://localhost/MongoConnectTest");
+                RepositoryFactory.Initialize("mongodb://localhost/MongoConnectTest", applicationContext);
 
-                CreateReadUpdateDelete(repositroySession);
+                //SingleTenantCRUD(applicationContext.TenantKey);
+                MultiTenantCRUD();
             }
-            catch (Exception e) { }
+            catch (Exception exception) { }
         }
 
-        public static void CreateReadUpdateDelete(RepositorySession session)
+        public static void SingleTenantCRUD(string key)
         {
-            Context context = session.Context;
-            PersonRepository personRepo = session.GetPersonRepository();
+            RepositorySession repositroySession = RepositoryFactory.CreateSession();
+
+            ClientRepository repository = repositroySession.GetClientRepository();
+
+            Client model = new Client(key);
+
+            repository.Insert(model);
+        }
+
+        public static void MultiTenantCRUD()
+        {
+            RepositorySession repositroySession = RepositoryFactory.CreateSession();
+
+            PersonRepository personRepository = repositroySession.GetPersonRepository();
 
             Person person = new Person("This is test");
 
-            personRepo.Insert(person);
-            Person personFromDB = personRepo.Find(person.Id);
+            personRepository.Insert(person);
+            Person personFromDB = personRepository.Find(person.Id);
             personFromDB.FullName = "Name Changed";
-            personRepo.Update(personFromDB);
-            personRepo.Delete(person.Id);
+            personRepository.Update(personFromDB);
+            //personRepository.Delete(person.Id);
         }
     }
 }

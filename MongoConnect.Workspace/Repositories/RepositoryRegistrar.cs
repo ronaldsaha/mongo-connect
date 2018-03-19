@@ -1,4 +1,7 @@
-﻿using MongoConnect.Repositories;
+﻿using MongoConnect.Models;
+using MongoConnect.Repositories;
+using MongoConnect.Workspace.Models;
+using MongoDB.Bson.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +14,7 @@ namespace MongoConnect.Workspace.Repositories
     {
         public override void OnRegistration()
         {
+            BsonClassMap.RegisterClassMap<Client>();
         }
     }
 }

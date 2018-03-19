@@ -41,19 +41,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Context.cs" />
+    <Compile Include="IdentityProvider.cs" />
     <Compile Include="Entity.cs" />
-    <Compile Include="EntityReference.cs" />
-    <Compile Include="FieldName.cs" />
     <Compile Include="Identity.cs" />
     <Compile Include="NullIdentity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository.cs" />
-    <Compile Include="SortDirection.cs" />
-    <Compile Include="SortOrder.cs" />
-    <Compile Include="TimestampedEntity.cs" />
-    <Compile Include="WorkspaceContext.cs" />
-    <Compile Include="WorkspaceEntity.cs" />
+    <Compile Include="Tenant.cs" />
+    <Compile Include="TenantProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MongoConnect.Models.nuspec" />

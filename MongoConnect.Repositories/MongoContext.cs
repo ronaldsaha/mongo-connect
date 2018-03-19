@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace MongoConnect.Repositories
 {
-    public class MongoContext : Context
+    public class MongoContext : IdentityProvider
     {
-        public MongoContext() { }
+        public MongoContext(IMongoDatabase database) { Database = database; }
         public Identity GetEmptyID()
         {
             return new ObjectIdentity();
@@ -26,12 +26,6 @@ namespace MongoConnect.Repositories
             ObjectId.TryParse(id, out objectId);
             return new ObjectIdentity(objectId); ;
         }
-
-        public string IDToString(Identity id)
-        {
-            if (id.IsNull)
-                return string.Empty;
-            return id.ToString();
-        }
+        internal IMongoDatabase Database { get; private set; }
     }
 }

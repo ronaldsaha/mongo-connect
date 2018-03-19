@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MongoConnect.Workspace
+namespace MongoConnect.Workspace.Models
 {
     public class Person : Entity
     {

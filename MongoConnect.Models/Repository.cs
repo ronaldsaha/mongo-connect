@@ -12,8 +12,8 @@ namespace MongoConnect.Models
         IEnumerable<TEntity> FindAll();
         IEnumerable<TEntity> FindAll(IEnumerable<Identity> ids);
         IEnumerable<TEntity> FindAll(int pageIndex, int pageSize);
-        IEnumerable<TEntity> FindAll(SortOrder order);
-        IEnumerable<TEntity> FindAll(SortOrder order, int pageIndex, int pageSize);
+        //IEnumerable<TEntity> FindAll(SortOrder order);
+        //IEnumerable<TEntity> FindAll(SortOrder order, int pageIndex, int pageSize);
         bool Insert(TEntity entity);
         bool Update(TEntity entity);
         void Delete(Identity id);

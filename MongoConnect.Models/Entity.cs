@@ -10,11 +10,6 @@ namespace MongoConnect.Models
     {
         protected Entity() : this(new NullIdentity()) { }
         protected Entity(Identity id) { Id = id; }
-        public Identity Id { get; internal set; }
-        public virtual void UpdateContext(Context context)
-        {
-            if (Id.IsNull)
-                Id = context.GetNewID();
-        }
+        public Identity Id { get; set; }
     }
 }

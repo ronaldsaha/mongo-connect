@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace MongoConnect.Models
 {
-    public interface WorkspaceContext
+    public interface IdentityProvider
     {
-        Entity Workspace { get; }
+        Identity GetEmptyID();
+        Identity GetNewID();
+        Identity ParseID(string id);
     }
 }

@@ -12,12 +12,12 @@ namespace MongoConnect.Repositories
 {
     public abstract class BaseRepository<TEntity> : Repository<TEntity> where TEntity : Entity
     {
-        protected BaseRepository(Context context, MongoSession session, string collectionName)
+        protected BaseRepository(IdentityProvider context, string collectionName)
         {
-            if (context is MongoWorkspaceContext && typeof(TEntity).IsSubclassOf(typeof(WorkspaceEntity)))
-                Collection = new WorkspaceCollection<TEntity>(context, session, collectionName);
+            if (context is MongoTenantContext)
+                Collection = new WorkspaceCollection<TEntity>((MongoContext)context, collectionName);
             else
-                Collection = new BasicCollection<TEntity>(context, session, collectionName);
+                Collection = new BasicCollection<TEntity>((MongoContext)context, collectionName);
         }
 
         public virtual TEntity Find(Identity id)
@@ -51,14 +51,14 @@ namespace MongoConnect.Repositories
             return Collection.Find(filter).Skip(GetSkip(pageIndex, pageSize)).Limit(pageSize).ToEnumerable();
         }
 
-        public virtual IEnumerable<TEntity> FindAll(SortOrder order)
-        {
-            return FindAll(Filter.Empty, GetSortDefinition(order));
-        }
-        public virtual IEnumerable<TEntity> FindAll(SortOrder order, int pageIndex, int pageSize)
-        {
-            return FindAll(Filter.Empty, GetSortDefinition(order), pageIndex, pageSize);
-        }
+        //public virtual IEnumerable<TEntity> FindAll(SortOrder order)
+        //{
+        //    return FindAll(Filter.Empty, GetSortDefinition(order));
+        //}
+        //public virtual IEnumerable<TEntity> FindAll(SortOrder order, int pageIndex, int pageSize)
+        //{
+        //    return FindAll(Filter.Empty, GetSortDefinition(order), pageIndex, pageSize);
+        //}
 
         protected virtual IEnumerable<TEntity> FindAll(FilterDefinition<TEntity> filter, SortDefinition<TEntity> order)
         {
@@ -122,13 +122,13 @@ namespace MongoConnect.Repositories
             return (pageIndex - 1) * pageSize;
         }
 
-        protected virtual SortDefinition<TEntity> GetSortDefinition(SortOrder sortOrder)
-        {
-            if (sortOrder.Direction == Models.SortDirection.Ascending)
-                return Sort.Ascending(sortOrder.FieldName.Name);
-            else
-                return Sort.Descending(sortOrder.FieldName.Name);
-        }
+        //protected virtual SortDefinition<TEntity> GetSortDefinition(SortOrder sortOrder)
+        //{
+        //    if (sortOrder.Direction == Models.SortDirection.Ascending)
+        //        return Sort.Ascending(sortOrder.FieldName.Name);
+        //    else
+        //        return Sort.Descending(sortOrder.FieldName.Name);
+        //}
 
         protected virtual IEnumerable<ObjectId> ConvertToObjectId(IEnumerable<Identity> ids)
         {

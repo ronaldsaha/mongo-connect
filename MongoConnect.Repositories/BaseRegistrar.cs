@@ -1,5 +1,6 @@
 ﻿using MongoConnect.Models;
 using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Conventions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,16 @@ namespace MongoConnect.Repositories
             ObjectIDSerializer IDSerializer = new ObjectIDSerializer();
             BsonSerializer.RegisterSerializer(typeof(Identity), IDSerializer);
             BsonSerializer.RegisterSerializer(typeof(ObjectIdentity), IDSerializer);
+
+            if (MongoRepositoryFactory.IsMultiTenant)
+            {
+                BsonClassMap.RegisterClassMap<Tenant>();
+
+                var conventionPack = new ConventionPack();
+                conventionPack.Add(new IgnoreExtraElementsConvention(true));
+                ConventionRegistry.Register("GlobalIgnoreExtraElements", conventionPack, t => true);
+            }
+                
 
             OnRegistration();
         }
