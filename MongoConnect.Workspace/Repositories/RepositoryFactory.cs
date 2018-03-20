@@ -13,17 +13,17 @@ namespace MongoConnect.Workspace.Repositories
     {
         public static void Initialize(string connectionString)
         {
-            MongoRepositoryFactory.Initialize<RepositoryRegistrar>(connectionString);
+            MongoConnectConfiguration.Initialize<RepositoryRegistrar>(connectionString);
         }
 
         public static void Initialize(string connectionString, TenantProvider tenantProvider)
         {
-            MongoRepositoryFactory.IntializeMultiTenant<RepositoryRegistrar>(connectionString, tenantProvider);
+            MongoConnectConfiguration.IntializeMultiTenant<RepositoryRegistrar>(connectionString, tenantProvider);
         }
 
         public static RepositorySession CreateSession()
         {
-            return new RepositorySession(MongoRepositoryFactory.CreateContext());
+            return new RepositorySession(MongoConnectConfiguration.CreateContext());
         }
     }
 }

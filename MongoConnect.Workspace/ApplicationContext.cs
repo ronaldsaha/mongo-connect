@@ -11,19 +11,10 @@ namespace MongoConnect.Workspace
     {
         public ApplicationContext()
         {
-            TenantKey = "TestKey";
+            CurrentKey = new Guid().ToString();
         }
-
-        public string GetTenantCollectionName()
-        {
-            return "Client";
-        }
-
-        public string GetCurrentTenantKey()
-        {
-            return TenantKey;
-        }
-
-        public string TenantKey { get; private set; }
+        public string CollectionName { get { return "Client"; } }
+        public string KeyPropertyName { get { return "_Tenant"; } }
+        public string CurrentKey { get; set; }
     }
 }

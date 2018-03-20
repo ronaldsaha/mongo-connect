@@ -75,7 +75,7 @@ namespace MongoConnect.Repositories
         protected virtual void UpdateEntity(TEntity entity)
         {
             if (entity.Id.IsNull)
-                entity.Id = Context.GetNewID();
+                entity.Id = Context.IdentityProvider.GetNewID();
         }
 
 

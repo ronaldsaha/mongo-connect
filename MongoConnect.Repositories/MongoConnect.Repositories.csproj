@@ -67,14 +67,15 @@
     <Compile Include="BaseRepository.cs" />
     <Compile Include="BaseRegistrar.cs" />
     <Compile Include="BasicCollection.cs" />
+    <Compile Include="MongoConnectConfiguration.cs" />
     <Compile Include="MongoContext.cs" />
-    <Compile Include="ObjectIdentity.cs" />
-    <Compile Include="ObjectIDGenerator.cs" />
-    <Compile Include="ObjectIDSerializer.cs" />
+    <Compile Include="Utils\ObjectIdentity.cs" />
+    <Compile Include="Utils\ObjectIdentityProvider.cs" />
+    <Compile Include="Utils\ObjectIDGenerator.cs" />
+    <Compile Include="Utils\ObjectIDSerializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MongoTenantContext.cs" />
-    <Compile Include="MongoRepositoryFactory.cs" />
-    <Compile Include="WorkspaceCollection.cs" />
+    <Compile Include="TenantCollection.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MongoConnect.Models\MongoConnect.Models.csproj">

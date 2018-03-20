@@ -1,4 +1,5 @@
 ﻿using MongoConnect.Models;
+using MongoConnect.Repositories.Utils;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
@@ -12,12 +13,12 @@ namespace MongoConnect.Repositories
 {
     public abstract class BaseRepository<TEntity> : Repository<TEntity> where TEntity : Entity
     {
-        protected BaseRepository(IdentityProvider context, string collectionName)
+        protected BaseRepository(MongoContext context, string collectionName)
         {
-            if (context is MongoTenantContext)
-                Collection = new WorkspaceCollection<TEntity>((MongoContext)context, collectionName);
+            if (context is MongoTenantContext && !typeof(TEntity).IsSubclassOf(typeof(Tenant)))
+                Collection = new TenantCollection<TEntity>(context, collectionName);
             else
-                Collection = new BasicCollection<TEntity>((MongoContext)context, collectionName);
+                Collection = new BasicCollection<TEntity>(context, collectionName);
         }
 
         public virtual TEntity Find(Identity id)

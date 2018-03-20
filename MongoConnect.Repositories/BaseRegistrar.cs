@@ -1,4 +1,5 @@
 ﻿using MongoConnect.Models;
+using MongoConnect.Repositories.Utils;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Conventions;
 using System;
@@ -23,7 +24,7 @@ namespace MongoConnect.Repositories
             BsonSerializer.RegisterSerializer(typeof(Identity), IDSerializer);
             BsonSerializer.RegisterSerializer(typeof(ObjectIdentity), IDSerializer);
 
-            if (MongoRepositoryFactory.IsMultiTenant)
+            if (MongoConnectConfiguration.IsMultiTenant)
             {
                 BsonClassMap.RegisterClassMap<Tenant>();
 

@@ -1,4 +1,5 @@
 ﻿using MongoConnect.Models;
+using MongoConnect.Repositories.Utils;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
@@ -9,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace MongoConnect.Repositories
 {
-    public class WorkspaceCollection<TEntity> : BasicCollection<TEntity> where TEntity : Entity
+    public class TenantCollection<TEntity> : BasicCollection<TEntity> where TEntity : Entity
     {
-        public WorkspaceCollection(MongoContext context, string collectionName)
+        public TenantCollection(MongoContext context, string collectionName)
             : base(context, collectionName)
         {
             _WorspaceCollection = context.Database.GetCollection<BsonDocument>(collectionName);
@@ -35,7 +36,7 @@ namespace MongoConnect.Repositories
 
         public override IAsyncCursor<TResult> Aggregate<TResult>(IPipelineStageDefinition[] pipeline)
         {
-            PipelineStageDefinition<TEntity, TResult> workspaceQuery = new BsonDocument { { "$match", GetWorkspaceFilter().ToBsonDocument() } };
+            PipelineStageDefinition<TEntity, TResult> workspaceQuery = new BsonDocument { { "$match", GetTenantFilter().ToBsonDocument() } };
             List<IPipelineStageDefinition> pipelineList = pipeline.ToList();
             pipelineList.Insert(0, workspaceQuery);
             return base.Aggregate<TResult>(pipelineList.ToArray());
@@ -43,12 +44,12 @@ namespace MongoConnect.Repositories
 
         public override IAggregateFluent<TEntity> Aggregate()
         {
-            return Collection.Aggregate().Match(GetWorkspaceFilter());
+            return Collection.Aggregate().Match(GetTenantFilter());
         }
 
         protected override FilterDefinition<TEntity> ProcessFilter(FilterDefinition<TEntity> filter)
         {
-            return Builders<TEntity>.Filter.And(filter, GetWorkspaceFilter());
+            return Builders<TEntity>.Filter.And(filter, GetTenantFilter());
         }
 
         private BsonDocument UpdateAndGetUpdateDefinition(UpdateDefinition<TEntity> update)
@@ -65,7 +66,7 @@ namespace MongoConnect.Repositories
             return document;
         }
 
-        private FilterDefinition<TEntity> GetWorkspaceFilter()
+        private FilterDefinition<TEntity> GetTenantFilter()
         {
             ObjectIdentity workspaceId = (ObjectIdentity)((MongoTenantContext)Context).TenantId;
             return Builders<TEntity>.Filter.Eq<ObjectId>("_Tenant", workspaceId.IdentityValue);

@@ -12,7 +12,7 @@ namespace MongoConnect.Workspace.Repositories
 {
     public class PersonRepository : BaseRepository<Person>
     {
-        public PersonRepository(IdentityProvider context, string collectionName)
+        public PersonRepository(MongoContext context, string collectionName)
             : base(context, collectionName) { }
     }
 }

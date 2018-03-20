@@ -10,7 +10,7 @@ namespace MongoConnect.Workspace.Repositories
 {
     public class RepositorySession
     {
-        public RepositorySession(IdentityProvider context) { Context = context; }
+        public RepositorySession(MongoContext context) { Context = context; }
 
         public PersonRepository GetPersonRepository()
         {
@@ -22,6 +22,6 @@ namespace MongoConnect.Workspace.Repositories
             return new ClientRepository(Context, "Client");
         }
 
-        public IdentityProvider Context;
+        public MongoContext Context;
     }
 }

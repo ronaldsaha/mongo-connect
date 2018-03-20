@@ -20,7 +20,7 @@ namespace MongoConnect.Workspace
                 //RepositoryFactory.Initialize("mongodb://localhost/MongoConnectTest");
                 RepositoryFactory.Initialize("mongodb://localhost/MongoConnectTest", applicationContext);
 
-                //SingleTenantCRUD(applicationContext.TenantKey);
+                SingleTenantCRUD(applicationContext.CurrentKey);
                 MultiTenantCRUD();
             }
             catch (Exception exception) { }

@@ -11,7 +11,7 @@ namespace MongoConnect.Workspace.Repositories
 {
     public class ClientRepository : BaseRepository<Client>
     {
-        public ClientRepository(IdentityProvider context, string collectionName)
+        public ClientRepository(MongoContext context, string collectionName)
             : base(context, collectionName) { }
     }
 }

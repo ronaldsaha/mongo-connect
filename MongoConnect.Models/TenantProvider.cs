@@ -8,7 +8,8 @@ namespace MongoConnect.Models
 {
     public interface TenantProvider
     {
-        string GetTenantCollectionName();
-        string GetCurrentTenantKey();
+        string CollectionName { get; }
+        string KeyPropertyName { get; }
+        string CurrentKey { get; }
     }
 }
